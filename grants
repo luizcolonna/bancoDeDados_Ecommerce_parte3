@@ -1,0 +1,16 @@
+-- Permissões de acesso a views
+-- Usuário gerente (com acesso às views de funcionários e departamentos)
+CREATE USER 'gerente'@'localhost' IDENTIFIED BY 'senhaSegura123';
+GRANT SELECT ON ecommerce.vw_employees_by_department_city TO 'gerente'@'localhost';
+GRANT SELECT ON ecommerce.vw_departments_and_managers TO 'gerente'@'localhost';
+GRANT SELECT ON ecommerce.vw_projects_by_employee_count TO 'gerente'@'localhost';
+GRANT SELECT ON ecommerce.vw_projects_departments_managers TO 'gerente'@'localhost';
+
+-- Usuário funcionário (sem acesso a departamentos/gerentes)
+CREATE USER 'funcionario'@'localhost' IDENTIFIED BY 'senhaSegura456';
+GRANT SELECT ON ecommerce.vw_employees_with_dependents_and_manager_status TO 'funcionario'@'localhost';
+
+-- SELECT User, Host FROM mysql.user WHERE User in ('gerente', 'funcionario') AND Host = 'localhost';
+
+-- DROP USER 'gerente'@'localhost';
+-- DROP USER 'funcionario'@'localhost';
