@@ -1,0 +1,99 @@
+-- 1) Número de empregados por departamento e localidade
+CREATE VIEW vw_employees_by_department_city AS
+SELECT 
+    d.name AS department_name,
+    d.city,
+    COUNT(e.idEmployee) AS total_employees
+FROM 
+    departments d
+LEFT JOIN 
+    employees e ON d.idDepartment = e.idDepartment
+GROUP BY 
+    d.name, d.city;
+
+
+-- 2) Lista de departamentos e seus gerentes
+CREATE VIEW vw_departments_and_managers AS
+SELECT 
+    d.idDepartment,
+    d.name AS department_name,
+    d.city,
+    e.Fname AS manager_firstname,
+    e.Lname AS manager_lastname
+FROM 
+    departments d
+JOIN 
+    employees e ON e.idEmployee = (
+        SELECT MIN(idEmployee) 
+        FROM employees 
+        WHERE idDepartment = d.idDepartment
+    );
+
+-- 3) Projetos com maior número de empregados
+CREATE VIEW vw_projects_by_employee_count AS
+SELECT 
+    d.name AS project_name,
+    COUNT(e.idEmployee) AS total_employees
+FROM 
+    departments d
+JOIN 
+    employees e ON d.idDepartment = e.idDepartment
+GROUP BY 
+    d.name
+ORDER BY 
+    total_employees DESC;
+
+-- 4) Lista de projetos, departamentos e gerentes
+CREATE VIEW vw_projects_departments_managers AS
+SELECT 
+    d.name AS department_name,
+    d.city,
+    e.Fname AS manager_firstname,
+    e.Lname AS manager_lastname
+FROM 
+    departments d
+JOIN 
+    employees e ON e.idEmployee = (
+        SELECT MIN(idEmployee) 
+        FROM employees 
+        WHERE idDepartment = d.idDepartment
+    );
+
+-- 5) Quais empregados possuem dependentes e se são gerentes
+-- Estrutura hipotética (caso exista ou queira criar):
+CREATE TABLE dependents (
+	idDependent INT AUTO_INCREMENT PRIMARY KEY,
+	idEmployee INT,
+	name VARCHAR(100),
+	relationship VARCHAR(50),
+	FOREIGN KEY (idEmployee) REFERENCES employees(idEmployee)
+);
+
+-- View baseada nessa estrutura:
+CREATE VIEW vw_employees_with_dependents_and_manager_status AS
+SELECT 
+    e.idEmployee,
+    e.Fname,
+    e.Lname,
+    d.name AS department_name,
+    COUNT(dep.idDependent) AS num_dependents,
+    CASE 
+        WHEN e.idEmployee = (
+            SELECT MIN(e2.idEmployee) 
+            FROM employees e2 
+            WHERE e2.idDepartment = e.idDepartment
+        ) THEN 'Sim'
+        ELSE 'Não'
+    END AS is_manager
+FROM 
+    employees e
+LEFT JOIN 
+    dependents dep ON e.idEmployee = dep.idEmployee
+JOIN 
+    departments d ON e.idDepartment = d.idDepartment
+GROUP BY 
+    e.idEmployee, e.Fname, e.Lname, d.name;
+
+
+
+
