@@ -1,7 +1,7 @@
 # 📦 Projeto ECOMMERCE — Banco de Dados SQL
 
 Bem-vindo ao projeto de banco de dados para um sistema de **ecommerce**!  😊
-Este projeto representa o modelo de banco de dados para um sistema de ecommerce completo, que abrange desde o cadastro de clientes e produtos até o gerenciamento de pedidos, estoque, fornecedores, vendedores e entregas.
+Este projeto representa o modelo de banco de dados para um sistema de ecommerce, que abrange desde o cadastro de clientes e produtos até o gerenciamento de pedidos, estoque, fornecedores, vendedores e entregas.
 Ele foi criado para servir como base estrutural robusta, permitindo a gestão integrada de informações essenciais para operações comerciais online, contemplando tanto aspectos comerciais (como vendas, pagamentos e entregas) quanto administrativos (departamentos, funcionários, salários e histórico de alterações).
 
 O modelo inclui:
